@@ -27,4 +27,10 @@ Structural/PS12sim.do
 Structural/PS12sim.log
 Structural/drawPresentationOrder.R
 
+*.fls
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.aux
+
 .Rproj.user

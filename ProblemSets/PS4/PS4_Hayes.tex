@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Problem Set 4}
+\author{Mason Ross Hayes}
+\date{February 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+
+\maketitle
+
+\section{Possible Web Scraping}
+
+\begin{itemize}
+    \item I would like to look at financial data such as cryptocurrency markets or the stock market. Lately I have been messing around with gekko trading bot as well as learning how to get stock data through the tiingo API. I think I could use one of these sources for the project.
+\end{itemize}
+
+\section{PS4 Answers}
+
+\begin{enumerate}
+    \item \begin{itemize}
+        \item df1 is a data frame
+        \item df is a SparkDataFrame
+    \end{itemize}
+    \item \begin{itemize}
+        \item At first I was using tidyverse to create df1, which I later realized overrided the native RDD functions of sparkR. Neither the select or filter function worked on df until I reloaded sparkR without the tidyverse library.
+        \item Once doing it correctly (without tidyverse), the select and filter functions do not work on df1 because it is a data frame, not a spark data frame, and those functions only work on RDDs.
+        \item With tidyverse, of course, the select and filter functions work on df1 because sparkR is calling the tidyverse functions, not the RDD functions.
+    \end{itemize}
+\end{enumerate}
+
+
+
+\end{document}

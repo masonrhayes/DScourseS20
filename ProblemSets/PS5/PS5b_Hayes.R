@@ -85,10 +85,15 @@ stockbenchmark
 # Calculate optimal portfolio using weights generated above
 
 optimal_portfolio <- stockreturns %>%
-  mutate(AAPL = AAPL * 0.3299,
-         ADBE = ADBE * 0.3179,
-         ESNT = ESNT * 0.04,
-         MSFT = MSFT * 0.3072,
+  mutate(AAPL = AAPL * 0.35,
+         ADBE = ADBE * 0.3148,
+         BLL = BLL * 0.0386,
+         COST = COST * 0.0192,
+         CRM = CRM * 0.005,
+         ESNT = ESNT * 0.005,
+         FIVE = FIVE * 0.005,
+         MSFT = MSFT * 0.1555,
+         NFLX = NFLX * 0.0968,
          SQ = SQ * 0.005) %>%
   mutate(total_returns = rowSums(stockreturns[,2:length(stockreturns)])) %>%
   transmute(date, total_returns)

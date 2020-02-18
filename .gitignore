@@ -33,4 +33,6 @@ Structural/drawPresentationOrder.R
 *.synctex.gz
 *.aux
 
+.Rhistory
+
 .Rproj.user

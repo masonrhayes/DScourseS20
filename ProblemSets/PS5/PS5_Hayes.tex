@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Problem Set 5}
+\author{Mason Ross Hayes}
+\date{February 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Web Scraping without API}
+
+\begin{itemize}
+    \item I found patent data from \href{https://www.ificlaims.com/rankings-top-50-2018.htm}{IFI Claims}
+    \item I used this data because I am interested in examining the changes in patent data from individuals and corporations and how these changes may be correlated with economic growth or inequality
+    \item I think this will be useful as an illustration of how US markets are becoming more concentrated
+    \item I didn't use any tutorials but I did use our in-class example as a starting point
+\end{itemize}
+
+\section{Web Scraping with API}
+
+\begin{itemize}
+    \item I found years of stock data for my portfolio of choice
+    \item I used the riingo package in R, which calls the \href{https://api.tiingo.com/documentation/general/overview}{Tiingo API}
+    \item To manipulate all this data, I also used the following packages
+        \begin{itemize}
+            \item tidyquant
+            \item PortfolioAnalytics
+            \item PerformanceAnalytics
+            \item ggthemes
+            \item quantmod
+            \item and more (in the R script)
+        \end{itemize}
+\end{itemize}
+
+
+
+\end{document}

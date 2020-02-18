@@ -1,0 +1,149 @@
+library(usethis)
+library(tidyverse)
+library(riingo)
+library(tidyquant)
+library(PerformanceAnalytics)
+library(quantmod)
+library(PortfolioAnalytics)
+library(lubridate)
+library(zoo)
+library(timetk)
+library(ROI)
+require(ROI.plugin.glpk)
+require(ROI.plugin.quadprog)
+library(ggthemes)
+
+
+# Set up riingo
+riingo_set_token(Sys.getenv("RIINGO_TOKEN"))
+riingo_get_token()
+
+# Choose stocks, start date, etc.
+tickers <- c("ESNT", "AAPL", "ADBE", "SQ", "MSFT", "NFLX", "CRM", "CSCO", "FIVE", "BLL", "COST")
+
+## Set weights:  wts <- rep(1/length(tickers), length(tickers))
+
+# Set start and end dates
+startdate <- "2019-10-01"
+enddate <- today()
+
+# Pull stock data from tiingo using riingo
+stockdata <- riingo_prices(tickers, 
+                           start_date = startdate, 
+                           end_date = enddate, 
+                           resample_frequency = "daily") %>%
+  group_by(ticker)
+# Check if it pulled properly
+view(stockdata)
+
+# Calculate the returns of each individual stock from the adjusted closing price (adjClose)
+# Format it properly so that the ticker is the column name, date is the row and adjClose is the info
+stockreturns <- stockdata %>%
+  tq_transmute(select = adjClose,
+               mutate_fun = periodReturn,
+               period = "daily",
+               col_rename = "Returns") %>%
+  select(ticker, date, Returns) %>%
+  spread(key = ticker, value = Returns)
+
+# Check that it worked
+view(stockreturns)
+
+# Omit NA values, convert tibble to xts, then check if it worked
+returns.portfolio <- na.omit(stockreturns)
+returns.portfolio <- tk_xts(returns.portfolio)
+view(returns.portfolio)
+
+
+# Use the new XTS-formatted data frame to create a portfolio with certain objectives and constraints
+p <- portfolio.spec(assets = colnames(returns.portfolio))
+p <- add.objective(portfolio = p, type = "risk", name = "var")
+p <- add.constraint(portfolio = p, type = "full_investment", enabled = TRUE)
+p <- add.constraint(portfolio = p, type = "return", return_target = 0.0035)
+p <- add.constraint(portfolio = p, type = "box", min = 0.005, max = 0.35)
+
+# Find the optimal weights
+optimize.portfolio(R = returns.portfolio, portfolio = p,
+                   optimize_method = "ROI", trace = TRUE)
+
+
+# Create benchmark from SPY, calculate returns, filter by date < end_date
+
+stockbenchmark <- riingo_prices("SPY",
+                                start_date = startdate,
+                                end_date = enddate,
+                                resample_frequency = "daily") %>%
+  tq_transmute(select = adjClose,
+               mutate_fun = periodReturn,
+               period = "daily",
+               col_rename = "SPY.Returns") %>%
+  filter(date < enddate)
+stockbenchmark
+
+
+
+# Calculate optimal portfolio using weights generated above
+
+optimal_portfolio <- stockreturns %>%
+  mutate(AAPL = AAPL * 0.3299,
+         ADBE = ADBE * 0.3179,
+         ESNT = ESNT * 0.04,
+         MSFT = MSFT * 0.3072,
+         SQ = SQ * 0.005) %>%
+  mutate(total_returns = rowSums(stockreturns[,2:length(stockreturns)])) %>%
+  transmute(date, total_returns)
+
+
+optimal_portfolio
+
+# Put the optimal protfolio returns and the benchmark returns into one tibble
+portfolio_vs_benchmark <- left_join(optimal_portfolio, stockbenchmark, by = "date")
+portfolio_vs_benchmark  
+  
+portfolio_performance <- tq_performance(portfolio_vs_benchmark,
+                                        Ra = total_returns,
+                                        Rb = SPY.Returns,
+                                        performance_fun = table.CAPM)
+portfolio_performance
+
+# Check some histograms of the returns
+Returns <- portfolio_vs_benchmark$total_returns
+hist(Returns, breaks = 50)
+
+sd(Returns)
+mean(Returns)
+
+test <- rnorm(1000, mean = mean(Returns), sd = sd(Returns))
+hist(test, breaks = 30)
+
+
+
+######################################
+# Create SMA charts 
+# Used some tutorials from tidyquant for the SMA 15/50 charts
+
+my_palette <- c("black", "blue", "red")
+stockdata %>%
+  filter(ticker == "BLL") %>%
+  tq_mutate(select = adjClose, mutate_fun = SMA, n = 15) %>%
+  rename(SMA.15 = SMA) %>%
+  tq_mutate(select = adjClose, mutate_fun = SMA, n = 50) %>%
+  rename(SMA.50 = SMA) %>%
+  select(date, close, SMA.15, SMA.50) %>%
+  gather(key = type, value = price, close:SMA.50) %>%
+  filter(date < ymd(enddate)) %>%
+  ggplot(aes(x = date, y = price, col = type)) +
+  geom_line() +
+  scale_colour_manual(values = my_palette) + 
+  theme(legend.position="bottom") +
+  ggtitle("Simple Moving Averages") +
+  xlab("") + 
+  ylab("Stock Price")
+
+sma <- stockdata %>%
+  ggplot(aes(x = date, y = adjClose)) +
+  geom_line() +
+  geom_bbands(aes(high = high, low = low, close = close), ma_fun = SMA, n = 50, show.legend = TRUE) +
+  ggthemes::theme_hc() +
+  scale_color_hc()+facet_wrap(~ ticker, ncol = 3, scales = "free")
+sma

@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Problem Set 6}
+\author{Mason Ross Hayes}
+\date{March 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Visualizing Cryptocurrency Returns with ggplot2}
+
+\begin{itemize}
+    \item I found years of price data for crypocurrencies of my choosing
+    \item I used the riingo package in R, which calls the \href{https://api.tiingo.com/documentation/general/overview}{Tiingo API}
+    \item To manipulate all this data, I also used the following packages
+        \begin{itemize}
+            \item tidyquant
+            \item riingo
+            \item ggthemes
+            \item lubridate
+            \item tidyverse
+        \end{itemize}
+    \item Cleaning the data involved the following steps:
+        \begin{enumerate}
+            \item Import the data using the riingo package
+            \item Group the cryptocurrency data by ticker
+            \item Transmute the data calculate the daily returns of each ticker
+            \item Select only the ticker, date, and the daily returns
+            \item Format it such that the returns for each ticker are in their own column
+        \end{enumerate}
+
+    \item Visualizing the data was straightforward once the data was cleaned:
+        \begin{enumerate}
+            \item Use ggplot2 to create simple histograms of the daily returns
+            \item Using the stock price data instead of the stock return data to do the following:
+
+        
+            \item Use tidyquant to add SMA function surrounded by Bollinger Bands
+        \end{enumerate}
+
+    \item I produced 3 graphics to (1) show the change in price and volatility, (2) show returns by day and (3) to show a histogram of those returns
+\end{itemize}
+
+
+\begin{center}
+    \includegraphics[scale = 0.75]{crypto_bband_graph.png}
+\end{center}
+\vspace{1 cm}
+
+\begin{center}
+    \includegraphics[scale = 0.75]{crypto_return_graph.png}
+\end{center}
+
+\begin{center}
+    \includegraphics[scale = 0.6]{crypto_histogram.png}
+\end{center}
+
+
+
+
+
+\end{document}

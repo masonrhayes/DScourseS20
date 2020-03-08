@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Problem Set 7}
+\author{Mason Ross Hayes}
+\date{March 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Wages}
+
+
+\begin{table}[!htbp] \centering 
+  \caption{Using the stargazer package on a tibble results in null output} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+\hline \\[-1.8ex] 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
+% Date and time: Sun, Mar 08, 2020 - 3:12:07 PM
+\begin{table}[!htbp] \centering 
+  \caption{stargazer must receive a standard data frame as input and not a tibble} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+\hline \\[-1.8ex] 
+logwage & 1,669 & 1.625 & 0.386 & 0.005 & 1.362 & 1.936 & 2.261 \\ 
+hgc & 2,229 & 13.101 & 2.524 & 0 & 12 & 15 & 18 \\ 
+tenure & 2,229 & 5.971 & 5.507 & 0.000 & 1.583 & 9.333 & 25.917 \\ 
+age & 2,229 & 39.152 & 3.062 & 34 & 36 & 42 & 46 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table}
+
+6. The variable logwage is missing for 25\% of the observations. It is most likely MNAR; those with a very low or very high wage may not wish to report their incomes; or, some other factor could explain why people wish not to report their incomes, such as age for example. 
+\clearpage
+
+\section{Imputations}
+
+% Date and time: Sun, Mar 08, 2020 - 4:53:12 PM
+\begin{table}[!htbp] \centering 
+  \caption{Comparing the three regression models} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{logwage} \\ 
+ & Complete & Mean Imputed & LM Imputed \\
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ hgc & 0.062$^{***}$ & 0.050$^{***}$ & 0.048$^{***}$ \\ 
+  & (0.005) & (0.004) & (0.004) \\ 
+  & & & \\ 
+ collegenot college grad & 0.145$^{***}$ & 0.168$^{***}$ & 0.174$^{***}$ \\ 
+  & (0.034) & (0.026) & (0.026) \\ 
+  & & & \\ 
+ tenure & 0.050$^{***}$ & 0.038$^{***}$ & 0.037$^{***}$ \\ 
+  & (0.005) & (0.004) & (0.004) \\ 
+  & & & \\ 
+ tenure\_sq & $-$0.002$^{***}$ & $-$0.001$^{***}$ & $-$0.001$^{***}$ \\ 
+  & (0.0003) & (0.0002) & (0.0002) \\ 
+  & & & \\ 
+ age & 0.0004 & 0.0002 & 0.0003 \\ 
+  & (0.003) & (0.002) & (0.002) \\ 
+  & & & \\ 
+ marriedsingle & $-$0.022 & $-$0.027$^{**}$ & $-$0.029$^{**}$ \\ 
+  & (0.018) & (0.014) & (0.014) \\ 
+  & & & \\ 
+ Constant & 0.534$^{***}$ & 0.708$^{***}$ & 0.720$^{***}$ \\ 
+  & (0.146) & (0.116) & (0.117) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 1,669 & 2,229 & 2,229 \\ 
+R$^{2}$ & 0.208 & 0.147 & 0.131 \\ 
+Adjusted R$^{2}$ & 0.206 & 0.145 & 0.129 \\ 
+Residual Std. Error & 0.344 (df = 1662) & 0.308 (df = 2222) & 0.312 (df = 2222) \\ 
+F Statistic & 72.917$^{***}$ (df = 6; 1662) & 63.973$^{***}$ (df = 6; 2222) & 55.966$^{***}$ (df = 6; 2222) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+If the true value of $\hat{\beta_1}$ is 0.093, then the mean imputed and lm imputed models are both bad models to use. This is probably because $logwage$ is not actually missing at random. Both the mean and lm imputations result in a $\hat{\beta_1}$ that decreases from simply using the complete data.
+
+\clearpage
+\section{Project}
+
+I have made very little progress on the project since I have not received the data from scite yet. I may have to change my project to examine a topic for which there are already good datasets to use. I hope this isn't the case -- it depends when I can get the data from scite.
+
+
+
+\end{document}

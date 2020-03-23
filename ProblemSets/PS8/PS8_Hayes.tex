@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Problem Set 8}
+\author{Mason Ross Hayes}
+\date{23 March 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Results}
+
+All relevant questions in PS8 should be answered implicitly by the following table:
+
+\begin{table}[!htbp] \centering 
+  \caption{Coefficients using Different Optimization Methods} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{0pt}} ccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & True\_Betas & LM & OLS\_ClosedForm & LBFGS\_Algo & NelderMead\_Algo & GradientDescent \\ 
+\hline \\[-1.8ex] 
+X1 & $1.500$ & $1.501$ & $1.501$ & $1.501$ & $1.501$ & $1.501$ \\ 
+X2 & $$-$1$ & $$-$0.991$ & $$-$0.991$ & $$-$0.996$ & $$-$0.996$ & $$-$0.991$ \\ 
+X3 & $$-$0.250$ & $$-$0.247$ & $$-$0.247$ & $$-$0.256$ & $$-$0.256$ & $$-$0.247$ \\ 
+X4 & $0.750$ & $0.744$ & $0.744$ & $0.745$ & $0.745$ & $0.744$ \\ 
+X5 & $3.500$ & $3.504$ & $3.504$ & $3.507$ & $3.507$ & $3.504$ \\ 
+X6 & $$-$2$ & $$-$1.999$ & $$-$1.999$ & $$-$1.999$ & $$-$1.999$ & $$-$1.999$ \\ 
+X7 & $0.500$ & $0.502$ & $0.502$ & $0.497$ & $0.497$ & $0.502$ \\ 
+X8 & $1$ & $0.997$ & $0.997$ & $1.002$ & $1.002$ & $0.997$ \\ 
+X9 & $1.250$ & $1.256$ & $1.256$ & $1.246$ & $1.246$ & $1.256$ \\ 
+X10 & $2$ & $1.999$ & $1.999$ & $1.996$ & $1.996$ & $1.999$ \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
+
+\begin{table}[!htbp] \centering 
+  \caption{LM Output} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-2} 
+\\[-1.8ex] & Y \\ 
+\hline \\[-1.8ex] 
+ X1 & 1.501$^{***}$ \\ 
+  & (0.002) \\ 
+  & \\ 
+ X2 & $-$0.991$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X3 & $-$0.247$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X4 & 0.744$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X5 & 3.504$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X6 & $-$1.999$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X7 & 0.502$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X8 & 0.997$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X9 & 1.256$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+ X10 & 1.999$^{***}$ \\ 
+  & (0.003) \\ 
+  & \\ 
+\hline \\[-1.8ex] 
+Observations & 100,000 \\ 
+R$^{2}$ & 0.971 \\ 
+Adjusted R$^{2}$ & 0.971 \\ 
+Residual Std. Error & 0.500 (df = 99990) \\ 
+F Statistic & 338,240.000$^{***}$ (df = 10; 99990) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+\end{document}

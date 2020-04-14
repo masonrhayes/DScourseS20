@@ -8,6 +8,7 @@ library(mlr3tuning)
 library(mlr3learners)
 library(glmnet)
 library(keras)
+library(ggthemes)
 library(paradox)
 
 
@@ -86,9 +87,12 @@ autoplot(prediction_kknn)
 # performs better than rpart even untuned
 
 prediction_bayes = learner_bayes$predict(task_income, row_ids = test_set)
-autoplot(prediction_bayes)
 
-learner_bayes$model
+autoplot(prediction_bayes) + 
+  scale_fill_economist() + 
+  labs(title = "Naive Bayes Prediction")
+
+
 
 ## Set Tuners -------
 tune_tree = ParamSet$new(list(
@@ -135,7 +139,10 @@ instance_rpart = TuningInstance$new(
 tuner = tnr("random_search")
 
 tuner$tune(instance_rpart)
-instance_rpart$result
+learner_rpart$param_set$values = instance_rpart$result$params
+learner_rpart$train(task_income, row_ids = train_set)
+prediction_rpart = learner_rpart$predict(task_income, row_ids = test_set)
+
 
 
 # GLM Tuning ---------
@@ -185,4 +192,10 @@ learner_rpart$param_set$values
 learner_kknn$param_set$values = instance_kknn$result$params
 learner_kknn$train(task_income, row_ids = train_set)
 prediction_kknn = learner_kknn$predict(task_income, row_ids = test_set)
-autoplot(prediction_kknn)
+autoplot(prediction_kknn) +
+  scale_fill_economist() +
+  labs(title = "KKNN Prediction")
+
+autoplot(prediction_rpart) +
+  scale_fill_economist() +
+  labs(title = "Tree Prediction")
